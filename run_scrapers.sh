@@ -8,3 +8,5 @@ python3 Scrapers/vt.py
 python3 Scrapers/ri.py
 python3 Scrapers/nh.py
 python3 Scrapers/me.py
+
+echo "Scraping successful. Check the Outputs/ folder for the csv files"
