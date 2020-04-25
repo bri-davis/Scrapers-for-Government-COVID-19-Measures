@@ -17,7 +17,7 @@ In order to ensure consistency between files, the dates and descriptions had to 
 
 The descriptions generally needed more intricate processes to extract only the supplied text summaries for the government orders. A common theme across all of the government websites was inconsistent formatting, across both html tabs and the text within. 
 
-The inconsistent html tabs made me innovate solutions that rely less on positioning of tabs in the contents, and cater more to the relative structure of the contents. This approach is perhaps more robust to inconsistencies, but could still break instantly if the website is altered. 
+The inconsistent html tabs made me innovate solutions that rely less on positioning of tabs in the contents, and cater more to the relative structure of the contents. This approach is perhaps more robust to inconsistencies, but could still break if contents are rearranged. 
 
 The text was cleaned and pre-processed on a case-by-case basis. For example, the regex library was used for scraping Connecticut's website to eliminate excess spaces in the text. Many of the websites also needed their descriptions to be split to only include the description-associated text. For example, I was able to split off any text not related to the emergency order by looking for rare characters such as colons or parentheses, and breaking the text there. This will generally work, unless the website places one of these characters in the body of a summary.
 ### Testing
@@ -30,7 +30,7 @@ Run the scrapers by running the bash-script on the command-line as follows:
 
 ```bash run_scrapers.sh```
 
-Look for the output in the /Outputs folder. I provided data up until Friday, April 24, 2020 in there already.
+Look for the output in the /Outputs folder. I provided data up until Saturday, April 25, 2020 in there already.
 
 ## Future Considerations
 
