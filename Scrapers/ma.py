@@ -3,12 +3,16 @@ from bs4 import BeautifulSoup
 import csv
 import datetime
 
+# Retrieve source text
 url = 'https://www.mass.gov/info-details/covid-19-state-of-emergency'
 source = requests.get(url).text
 bs = BeautifulSoup(source, 'html.parser')
 
+# Portion of page containing orders
 emergency_orders_section = bs.find('div', class_='page-content')
 emergency_orders = emergency_orders_section.findAll('p')
+
+# Elements being scraped
 field_names = ['Date', 'Description', 'Order_PDF_Link', 'Press_Release_Link', 'Guidance_Link']
 scraped_orders = list()
 
@@ -18,6 +22,7 @@ for emergency_order in emergency_orders:
 
     # Get the description
     text_section = emergency_order.text
+    # Alleviate inconsistent use of colons and periods, then split by period for summary
     description = text_section.replace(':', '.').split('.')[1]
     scraped_order['Description'] = description
 
@@ -28,12 +33,14 @@ for emergency_order in emergency_orders:
         date_format = datetime.datetime.strptime(date, '%B %d')
         date = date_format.strftime('%m/%d/2020')
         scraped_order['Date'] = date
+    # Discard elements of page that are not orders
     except ValueError:
         continue
 
     # Get the links
     link_section = emergency_order.findAll('a')
     for link in link_section:
+        # Use text from link section to decipher which type of link it is
         if 'ORDER' in link.text:
             scraped_order['Order_PDF_Link'] = 'https://www.mass.gov' + link['href']
         elif 'GUIDANCE' in link.text:

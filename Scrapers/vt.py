@@ -3,13 +3,16 @@ from bs4 import BeautifulSoup
 import csv
 import datetime
 
+# Retrieve source text
 url = 'https://governor.vermont.gov/covid19response'
 source = requests.get(url).text
 bs = BeautifulSoup(source, 'html.parser')
 
+# Portion of page containing orders
 emergency_orders_section = bs.find_all('div', class_='field-item even')
 emergency_orders = emergency_orders_section[1].find_all('li')
 
+# Elements being scraped
 field_names = ['Date', 'Description', 'Order_PDF_Link', 'Press_Release_Link', 'Guidance_Link']
 scraped_orders = list()
 
@@ -38,6 +41,7 @@ for emergency_order in emergency_orders:
     # Get the links
     link_section = emergency_order.findAll('a')
     for link in link_section:
+        # Use text in link section to decipher which type of link it is
         if 'Addendum' in link.text or 'Directive' in link.text:
             # Use the direct PDF link
             if 'pdf' in link['href']:

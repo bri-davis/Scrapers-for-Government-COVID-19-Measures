@@ -3,13 +3,16 @@ from bs4 import BeautifulSoup
 import csv
 import datetime
 
+# Retrieve source text
 url = 'https://www.maine.gov/governor/mills/official_documents'
 source = requests.get(url).text
 bs = BeautifulSoup(source, 'html.parser')
 
+# Portion of page containing orders
 emergency_orders_section = bs.find('div', class_='layout__region layout__region--content')
 emergency_orders = emergency_orders_section.find_all('li')
 
+# Elements being scraped
 field_names = ['Date', 'Description', 'Order_PDF_Link']
 scraped_orders = list()
 
@@ -19,6 +22,7 @@ for emergency_order in emergency_orders:
 
     # Get the description
     description = emergency_order.find_all('a')[0].text
+    # Break off the end of the text that doesn't pertain to covid summary
     description = ' '.join(description.split('(')[0].split()[3:])
     scraped_order['Description'] = description
 
@@ -31,10 +35,12 @@ for emergency_order in emergency_orders:
     # Get the date
     try:
         date = emergency_order.contents[-1].split()[-1]
+        # Last order pertaining to covid
         if date < '3/18/2020':
             break
         else:
-            scraped_order['Date'] = date            
+            scraped_order['Date'] = date
+    # Exclude elements of page that aren't orders
     except TypeError:
         continue    
 

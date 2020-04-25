@@ -3,14 +3,17 @@ from bs4 import BeautifulSoup
 import csv
 import datetime
 
+# Retrieve source text
 url = 'https://www.governor.nh.gov/news-media/emergency-orders/'
 source = requests.get(url).text
 bs = BeautifulSoup(source, 'html.parser')
 
+# Portion of page containing orders
 emergency_orders_section = bs.find('ul', class_='media-list')
 emergency_orders = emergency_orders_section.findAll('li')[1:]
 
-field_names = ['Date', 'Description', 'PDF_Link']
+# Elements being scraped
+field_names = ['Date', 'Description', 'Order_PDF_Link']
 scraped_orders = list()
 
 # Loop through the emergency orders and extract the attributes
@@ -24,6 +27,7 @@ for emergency_order in reversed(emergency_orders):
         # Remove preceding colon or dash
         description = ' '.join(title_section.contents[-2].split())[1:]
         scraped_order['Description'] = description
+    # If it's another element, skip it
     else:
         continue
 

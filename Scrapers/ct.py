@@ -4,36 +4,44 @@ import csv
 import datetime
 import re
 
+# Retrieve source text
 url = 'https://portal.ct.gov/Coronavirus/Pages/Emergency-Orders-issued-by-the-Governor-and-State-Agencies'
 source = requests.get(url).text
 bs = BeautifulSoup(source, 'html.parser')
 
+# Portion of page containing orders
 emergency_orders_section = bs.find('tbody')
 emergency_orders = emergency_orders_section.findAll('td')
 
-field_names = ['Date', 'Description', 'PDF_Link']
+# Elements being scraped
+field_names = ['Date', 'Description', 'Order_PDF_Link']
 scraped_orders = list()
 
 # Loop through the emergency orders and extract the attributes
 for emergency_order in emergency_orders:
     scraped_order = dict()
 
-    # First get title and PDF link
+    # First get date and PDF link
     title_section = emergency_order.find('p')
+    # Make sure it's an order, otherwise skip it
     if title_section != None:
+        # Break off unrelated text
         date = title_section.text.split(':')[0]
         # Change date format
         date_format = datetime.datetime.strptime(date, '%B %d, %Y')
         date = date_format.strftime('%m/%d/%Y')
         scraped_order['Date'] = date
         
+        # Get the PDF link
         pdf_link = 'https://portal.ct.gov' + title_section.find('a')['href']
         scraped_order['PDF_Link'] = pdf_link
 
-    # Next get description
+    # Get the description
     text_section = emergency_order.findAll('li')
+    # Make sure it's an order, otherwise skip it
     if text_section != None:
         lines = list()
+        # Combine the various sentences into one string.
         for line in text_section:
             lines.append(' ' + line.text + '.')
         description = ''.join(lines)
