@@ -68,7 +68,7 @@ scraped_order['Order_PDF_Link'] = order_link
 scraped_orders.append(scraped_order)
 
 # Create csv file for the scraped data
-with open('../Outputs/ma.csv', 'w', newline='') as csv_file:
+with open('Outputs/ma.csv', 'w', newline='') as csv_file:
     writer = csv.DictWriter(csv_file, fieldnames=field_names)
     writer.writeheader()
     writer.writerows(scraped_orders)
