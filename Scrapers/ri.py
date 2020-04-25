@@ -32,7 +32,7 @@ for emergency_order in emergency_orders:
 
     # Get PDF link
     pdf_link = 'https://governor.ri.gov' + emergency_order.find('a')['href'][5:]
-    scraped_order['PDF_Link'] = pdf_link
+    scraped_order['Order_PDF_Link'] = pdf_link
 
     # Get the description
     description_section = emergency_order.text.split('–')

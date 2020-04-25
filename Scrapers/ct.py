@@ -34,7 +34,7 @@ for emergency_order in emergency_orders:
         
         # Get the PDF link
         pdf_link = 'https://portal.ct.gov' + title_section.find('a')['href']
-        scraped_order['PDF_Link'] = pdf_link
+        scraped_order['Order_PDF_Link'] = pdf_link
 
     # Get the description
     text_section = emergency_order.findAll('li')

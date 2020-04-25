@@ -33,7 +33,7 @@ for emergency_order in reversed(emergency_orders):
 
     # Get the link
     link = title_section.find('a')['href']
-    scraped_order['PDF_Link'] = 'https://www.governor.nh.gov/news-media/emergency-orders/' + link
+    scraped_order['Order_PDF_Link'] = 'https://www.governor.nh.gov/news-media/emergency-orders/' + link
     
     # Get the date
     date_section = emergency_order.find('p', class_='media-date')
