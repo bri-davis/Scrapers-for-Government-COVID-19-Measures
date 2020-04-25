@@ -10,7 +10,7 @@ bs = BeautifulSoup(source, 'html.parser')
 emergency_orders_section = bs.find('div', class_='layout__region layout__region--content')
 emergency_orders = emergency_orders_section.find_all('li')
 
-field_names = ['Date', 'Description', 'Order_PDF_Link', 'Press_Release_Link', 'Guidance_Link']
+field_names = ['Date', 'Description', 'Order_PDF_Link']
 scraped_orders = list()
 
 # Loop through the emergency orders and extract the attributes
@@ -27,18 +27,14 @@ for emergency_order in emergency_orders:
     # Get the PDF link
     link = date_section['href']
     scraped_order['Order_PDF_Link'] = 'https://www.maine.gov' + link
-    
-    print(description)
-    print(link)
+
     # Get the date
     try:
         date = emergency_order.contents[-1].split()[-1]
         if date < '3/18/2020':
             break
         else:
-            scraped_order['Date'] = date
-        print(date)
-            
+            scraped_order['Date'] = date            
     except TypeError:
         continue    
 

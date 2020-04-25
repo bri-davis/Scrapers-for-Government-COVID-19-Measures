@@ -23,7 +23,6 @@ for emergency_order in reversed(emergency_orders):
     if len(title_section.contents[-2]) > 1:
         # Remove preceding colon or dash
         description = ' '.join(title_section.contents[-2].split())[1:]
-        print(description)
         scraped_order['Description'] = description
     else:
         continue
