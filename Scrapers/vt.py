@@ -39,11 +39,15 @@ for emergency_order in emergency_orders:
     link_section = emergency_order.findAll('a')
     for link in link_section:
         if 'Addendum' in link.text or 'Directive' in link.text:
-            # Get PDF link from website contained at link['href']
-            source = requests.get(link['href']).text
-            bs = BeautifulSoup(source, 'html.parser')
-            pdf_link = bs.find('span', class_='file').find('a')['href']            
-            scraped_order['Order_PDF_Link'] = pdf_link
+            # Use the direct PDF link
+            if 'pdf' in link['href']:
+                scraped_order['Order_PDF_Link'] = link['href']
+            # Access PDF on link['href']
+            else: 
+                source = requests.get(link['href']).text
+                bs = BeautifulSoup(source, 'html.parser')
+                pdf_link = bs.find('span', class_='file').find('a')['href']
+                scraped_order['Order_PDF_Link'] = pdf_link
         elif 'Guidance' in link.text:
             scraped_order['Guidance_Link'] = link['href']
         elif 'Press Release' in link.text:
